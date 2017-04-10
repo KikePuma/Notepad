@@ -1,0 +1,35 @@
+1
+monitor
+Jose Carlos
+Alvarez Perez
+26/8/13
+14
+1 4; 2 3
+****************************************
+2
+monitor
+Belen
+Alonso Dominguez 
+18/1/13
+7
+1 6; 2 7; 3 3
+****************************************
+3
+usuario
+Antonio
+Prieto Vazquez
+15/6/3
+3/10/9
+1,2
+65.0
+3 4; 4 2; 5 3
+****************************************
+4
+usuario
+Susana
+Rodriguez Estevez
+20/1/20
+6/11/11
+
+90.05
+1 1; 2 3
