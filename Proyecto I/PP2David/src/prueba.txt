@@ -1,0 +1,8 @@
+InsertaPersona alumno "David" "Ferrero Seta" 18/06/1995 17/09/2013 8.11
+AsignaCoordinador 10 10
+AsignaCargaDocente 10 34 T 69
+Matricula 2 34
+AsignaGrupo 3 34 P 18
+Evaluar 23 evaluarAsignatura.txt
+ObtenerCalendarioClases 19 calendarioJuanAlonso.txt
+OrdenarProfesoresPorCargaDocente cargaDocente.txt
