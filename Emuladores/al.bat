@@ -1,3 +1,0 @@
-SET ESAL=D:\
-tp7p5fix
-ESAL22
