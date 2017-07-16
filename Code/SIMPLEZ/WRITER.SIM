@@ -1,0 +1,17 @@
+; Maquina de escribir en Simplez
+; Es necesario presionar F9 para
+; activar la pantalla de E/S
+
+	ORG    0
+
+READER     LD     /511
+	BZ     /READER
+WRITER     ST     /509
+	LD     /CERO
+	ST     /511
+	BR     /READER
+	HALT
+
+CERO       DATA   0
+
+; F3 + B para limpiar la pantalla
