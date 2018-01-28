@@ -1,4 +1,0 @@
-LEEFICHERO -- Fichero 'personas.txt' inexistente
-LEEFICH -- Fichero 'ejecucion.txt' inexistente
-LEEFICH -- Fichero 'ejecucion.txt' inexistente
-LEEFICH -- Fichero 'ejecucion.txt' inexistente
