@@ -79,18 +79,17 @@ public class Mesa {
             
             for(short j = 0; j < 4; j++) {
                 if(palos.get(j).contains(i)) {
-                if(i < 10)
-                    System.out.print(i);
+                    if(i < 10)
+                        System.out.print(i);
+                    else
+                        System.out.print("\b" + i);
+                } else
+                    System.out.print(" ");
+
+                if(j == 3)
+                    System.out.println("  |");
                 else
-                    System.out.print("\b" + i);
-            }
-            else
-                System.out.print(" ");
-            
-            if(j == 3)
-                System.out.println("  |");
-            else
-                System.out.print("  | |  ");
+                    System.out.print("  | |  ");
             }
             
         }
