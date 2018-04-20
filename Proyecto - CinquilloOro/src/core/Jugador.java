@@ -147,7 +147,7 @@ public class Jugador {
     public class Mano {
 
         private boolean puntosOro;
-        private ArrayList<Carta> mano;
+        private final ArrayList<Carta> mano;
 
         /**
          * Constructor de la clase Mano
