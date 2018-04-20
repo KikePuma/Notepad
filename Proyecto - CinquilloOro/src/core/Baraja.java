@@ -1,44 +1,49 @@
 package core;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Collections;
-
 // Anotaciones profesorado:
 // -----------------------------------
 // Representa la baraja del juego, con 48 cartas (12 de cada palo),
 // desordenadas. Estructura: Las cartas se guardarán en un array estático.
 public class Baraja {
 
-    private static LinkedList<Carta> cartas;
+    private static Carta[] cartas;
+    private static short ultima_carta;
     private static final String[] PALOS = {"oros", "copas", "espadas", "bastos"};
 
     /**
      * Constructor de la clase Baraja
      */
     public Baraja() {
-        crearBaraja();
-        barajar();
-    }
 
-    /**
-     * Método para crear una nueva baraja
-     */
-    private void crearBaraja() {
-        cartas = new LinkedList<>();
+        cartas = new Carta[48];
 
-        for (String palo : PALOS) {
-            for (int j = 1; j < 13; j++) {
-                cartas.addLast(new Carta(palo, j));
+        short index = 0;
+
+        for (String palo: PALOS) {
+            for(short numero = 1; numero < 13; numero++) {
+                cartas[index] = new Carta(palo, numero);
+                index++;
             }
         }
+        
+        ultima_carta = (short) cartas.length;
+
+        barajar();
     }
 
     /**
      * Método para barajar las cartas
      */
     private void barajar() {
-        Collections.shuffle(cartas);
+
+    }
+    
+    /**
+     * Funcion para saber si la baraja está vacía
+     * @return True si la baraja está vacía
+     */
+    private boolean isEmpty() {
+        return ultima_carta == 0;
     }
 
     /**
@@ -47,7 +52,12 @@ public class Baraja {
      * @return La última carta en la baraja
      */
     private Carta cogerCarta() {
-        return cartas.pollLast();
+        Carta ultima = null;
+        if(!isEmpty()) {
+            ultima_carta--;
+            ultima = cartas[ultima_carta];
+        }
+        return ultima;
     }
 
     /**
@@ -55,6 +65,7 @@ public class Baraja {
      *
      * @param jugadores Jugadores actuales
      */
+    /**
     public void repartir(ArrayList<Jugador> jugadores) {
         while (!cartas.isEmpty()) {
 
@@ -68,6 +79,7 @@ public class Baraja {
             });
         }
     }
+    * */
 
     /** 
      * Función que retorna la baraja en formato cadena de texto
@@ -77,13 +89,8 @@ public class Baraja {
     @Override
     public String toString() {
         String msg = "";
-
-        // Functional Operations
-        // msg | foreach(cartas) | funcion de arg cartas
-        // ---------------------------------------------
-        // for(Carta carta: cartas)
-        //   msg += carta.toString() + "\n";
-        msg = cartas.stream().map((carta) -> carta.toString() + "\n").reduce(msg, String::concat);
+        for(short i = 0; i < ultima_carta; i++)
+            msg += cartas[i].toString() + "\n";
 
         return msg;
     }
