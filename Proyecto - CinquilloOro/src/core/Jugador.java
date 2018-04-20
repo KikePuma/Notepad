@@ -20,6 +20,7 @@ public class Jugador {
      * @param nombre Nombre del jugador
      */
     public Jugador(String nombre) {
+        this.puntos = 0;
         this.nombre = nombre;
         this.mano = new Mano();
     }
