@@ -68,15 +68,6 @@ public class Carta {
     }
 
     /**
-     * Setter de la variable numero
-     *
-     * @param numero Numero de la carta
-     */
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    /**
      * Getter de la variable palo
      *
      * @return Palo de la carta
@@ -85,15 +76,6 @@ public class Carta {
         return palo;
     }
 
-    /**
-     * Setter de la variable palo
-     *
-     * @param palo Palo de la carta
-     */
-    public void setPalo(String palo) {
-        this.palo = palo;
-    }
-    
     /** 
      * Función que retorna la carta en formato cadena de texto
      * 
