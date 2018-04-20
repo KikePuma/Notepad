@@ -62,50 +62,6 @@ public class Mesa {
     }
     
     /**
-     * Función para mostrar las posibles jugadas actuales
-     *
-     * @return Array con las posibles jugadas
-     */
-    public ArrayList<Carta> posiblesJugadas() {
-        ArrayList<Carta> posibles = new ArrayList<>();
-
-        if(isEmpty()) {
-            posibles.add(new Carta("oros", 5));
-            posibles.add(new Carta("copas", 5));
-            posibles.add(new Carta("bastos", 5));
-            posibles.add(new Carta("espadas", 5));
-        } else {
-            for(short i = 0; i < 4; i++) {
-                String palo = null;
-                switch(i) {
-                    case 0: palo = "oros"; break;
-                    case 1: palo = "copas"; break;
-                    case 2: palo = "bastos"; break;
-                    case 3: palo = "espadas"; break;
-                }
-                
-                if(palos.get(i).isEmpty())
-                    posibles.add(new Carta(palo, 5));
-                else {
-                    
-                    if(!palos.get(i).getFirst().equals(1)) {
-                        int num = ((int) palos.get(i).getFirst() -1);
-                        posibles.add(new Carta(palo, num));
-                        //System.out.println("Posible " + palo + " por arriba: " + num);
-                    }
-                    if(!palos.get(i).getLast().equals(12)) {
-                        int num = ((int) palos.get(i).getLast() + 1);
-                        posibles.add(new Carta(palo, num));
-                        //System.out.println("Posible " + palo + " por abajo: " + num);
-                    }
-                }
-            }
-        }
-                    
-        return posibles;
-    }
-    
-    /**
      * Método para mostrar la mesa en formato ASCII
      */
     public void mostrar() {

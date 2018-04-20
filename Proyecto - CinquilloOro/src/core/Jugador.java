@@ -205,7 +205,43 @@ public class Jugador {
          * @return ArrayList con el índice de las cartas que se pueden jugar
          */
         public ArrayList<Integer> posiblesJugadas(Mesa mesa) {
-            ArrayList<Carta> posibles = mesa.posiblesJugadas();
+            ArrayList<Carta> posibles = new ArrayList<>();
+            
+            // Comprobamos si la mesa está vacía
+            if(mesa.isEmpty()) {
+                posibles.add(new Carta("oros", 5));
+                posibles.add(new Carta("copas", 5));
+                posibles.add(new Carta("bastos", 5));
+                posibles.add(new Carta("espadas", 5));
+            } else {
+                // Nombramos cada palo con un numero
+                for(short i = 0; i < 4; i++) {
+                    String palo = null;
+                    switch(i) {
+                        case 0: palo = "oros"; break;
+                        case 1: palo = "copas"; break;
+                        case 2: palo = "bastos"; break;
+                        case 3: palo = "espadas"; break;
+                    }
+                    // Comprobamos si no hay cartas de ese palo
+                    if(mesa.getCartas(palo).isEmpty())
+                        posibles.add(new Carta(palo, 5));
+                    else {
+                        // Comprobamos si se puede colocar alguna por arriba
+                        if(!mesa.getCartas(palo).getFirst().equals(1)) {
+                            int num = ((int) mesa.getCartas(palo).getFirst() -1);
+                            posibles.add(new Carta(palo, num));
+                        }
+                        // o por abajo
+                        if(!mesa.getCartas(palo).getLast().equals(12)) {
+                            int num = ((int) mesa.getCartas(palo).getLast() + 1);
+                            posibles.add(new Carta(palo, num));
+                        }
+                    }
+                }
+            }
+            
+            // Comprobamos cuales de esas cartas tenemos en la mano
             ArrayList<Integer> index_cartas = new ArrayList<>();
 
             for (short i = 0; i < this.mano.size(); i++) {
