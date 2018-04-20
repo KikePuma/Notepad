@@ -75,8 +75,11 @@ public class Juego {
         jugador.forEach((j) -> {
             j.getMano().vaciarMano();
         });
-
-        baraja.repartir(jugador);
+        
+        System.out.println(baraja.toString());
+        ES.leeNum("");
+        repartirCartas(baraja);
+        
         do {
             ES.clearScreen();
             jugador_actual = jugador.get(getJugadorActual(turno));
@@ -146,6 +149,18 @@ public class Juego {
         System.out.println("Estado actual de la Mesa:");
         System.out.println("--------------------------------------------------");
         mesa.mostrar();
+    }
+    
+    /**
+     * Método para repartir las cartas
+     * @param baraja Baraja actual
+     */
+    private static void repartirCartas(Baraja baraja) {
+        while(!baraja.isEmpty()) {
+            for(short j = 0; j < NUM_JUGADORES; j++)
+                if(!baraja.isEmpty())
+                    jugador.get(j).getMano().añadirCarta(baraja.cogerCarta());
+        }
     }
 
     /**
