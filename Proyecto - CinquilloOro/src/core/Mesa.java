@@ -69,9 +69,12 @@ public class Mesa {
     public ArrayList<Carta> posiblesJugadas() {
         ArrayList<Carta> posibles = new ArrayList<>();
 
-        if(isEmpty())
+        if(isEmpty()) {
             posibles.add(new Carta("oros", 5));
-        else {
+            posibles.add(new Carta("copas", 5));
+            posibles.add(new Carta("bastos", 5));
+            posibles.add(new Carta("espadas", 5));
+        } else {
             for(short i = 0; i < 4; i++) {
                 String palo = null;
                 switch(i) {
