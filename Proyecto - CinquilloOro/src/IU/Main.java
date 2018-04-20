@@ -10,6 +10,7 @@ import static IU.Juego.inicioJuego;
 
 // TODO: Mesa array de Array Deques
 // TODO: Guardar carta entera ArrayDeque
+// TODO: Cartas mano de Array Dinamico a Estatico
 public class Main {
 
     /**
