@@ -73,11 +73,9 @@ public class Juego {
         puntosOro = puntosOro + 2;
         
         jugador.forEach((j) -> {
-            j.getMano().vaciarMano();
+            j.vaciarMano();
         });
-        
-        System.out.println(baraja.toString());
-        ES.leeNum("");
+
         repartirCartas(baraja);
         
         do {
@@ -94,17 +92,17 @@ public class Juego {
             if (accion == 0) {
                 turno++;
             }
-        } while (accion != 2 && !jugador_actual.getMano().isEmpty());
+        } while (accion != 2 && !jugador_actual.ManoIsEmpty());
         
         ES.clearScreen();
         System.out.println("PARTIDA FINALIZADA");
         System.out.println("--------------------------------------------------\n");
         getMesaActual(mesa);
         
-        if(jugador_actual.getMano().isEmpty())
+        if(jugador_actual.ManoIsEmpty())
             jugador_actual.setPuntos(jugador_actual.getPuntos() + PUNTOS_PARTIDA);
         
-        return jugador_actual.getMano().isEmpty();
+        return jugador_actual.ManoIsEmpty();
     }
     
     /**
@@ -159,7 +157,7 @@ public class Juego {
         while(!baraja.isEmpty()) {
             for(short j = 0; j < NUM_JUGADORES; j++)
                 if(!baraja.isEmpty())
-                    jugador.get(j).getMano().añadirCarta(baraja.cogerCarta());
+                    jugador.get(j).añadirCarta(baraja.cogerCarta());
         }
     }
 
@@ -170,7 +168,7 @@ public class Juego {
     private static void getManoActual(Jugador jugador) {
         System.out.println("Cartas en la mano del Jugador " + jugador.getNombre() + ":");
         System.out.println("--------------------------------------------------");
-        jugador.getMano().mostrar();
+        jugador.mostrarMano();
     }
 
     /**
@@ -184,7 +182,7 @@ public class Juego {
         System.out.println("--------------------------------------------------\n");
 
         ArrayList<Integer> posibles_jugadas = new ArrayList<>();
-        ArrayList<Integer> posibles_cartas = jugador.getMano().posiblesJugadas(mesa);
+        ArrayList<Integer> posibles_cartas = jugador.posiblesJugadas(mesa);
 
         if (posibles_cartas.isEmpty()) {
             System.out.println("- No hay posibles jugadas -\n");
@@ -194,14 +192,14 @@ public class Juego {
             // -------------------
             // for (int i : posibles_cartas) {
             //     posibles_jugadas.add(i);
-            //     Carta carta = jugador.getMano().getCartas().get(i);
+            //     Carta carta = jugador..getCartas().get(i);
             //     System.out.println("[" + posibles_jugadas.indexOf(i) + "] " + carta.getNumero() + " " + carta.getPalo());
             // }
             posibles_cartas.stream().map((i) -> {
                 posibles_jugadas.add(i);
                 return i;
             }).forEachOrdered((i) -> {
-                Carta carta = jugador.getMano().getCartas().get(i);
+                Carta carta = jugador.getCartas().get(i);
                 System.out.println("[" + posibles_jugadas.indexOf(i) + "] " + carta.getNumero() + " " + carta.getPalo());
             });
         }
@@ -238,9 +236,9 @@ public class Juego {
                 accion = 0;
             }
         } else if (opcion_elegida < opciones.size()) {
-            jugador.getMano().ponerCarta(mesa, jugador.getMano().getCartas().get(opciones.get(opcion_elegida)));
-            if(jugador.getMano().getPuntosOro()) {
-                jugador.getMano().setPuntosOro(false);
+            jugador.ponerCarta(mesa, jugador.getCartas().get(opciones.get(opcion_elegida)));
+            if(jugador.pusoAsOros()) {
+                jugador.resetearFlagAsDeOros();
                 jugador.setPuntos(jugador.getPuntos() + puntosOro);
                 puntosOro = 0;
             }

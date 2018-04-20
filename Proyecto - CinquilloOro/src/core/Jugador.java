@@ -41,30 +41,21 @@ public class Jugador {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    /**
-     * Getter de la variable mano
-     *
-     * @return Mano del jugador
-     */
-    public Mano getMano() {
-        return mano;
-    }
-
-    /**
-     * Setter de las cartas de la mano
-     *
-     * @param mano Mano del jugador
-     */
-    public void setMano(Mano mano) {
-        this.mano = mano;
-    }
     
     /**
      * Método para vaciar la mano
      */
     public void vaciarMano() {
         this.mano = new Mano();
+    }
+    
+    /**
+     * Función para obtener si la mano del jugador está vacía
+     *
+     * @return True si la mano del jugador está vacía
+     */
+    public boolean ManoIsEmpty() {
+        return this.mano.isEmpty();
     }
 
     /**
@@ -94,6 +85,59 @@ public class Jugador {
         this.puntos = puntos;
     }
 
+    /**
+     * Función para deducir las posibles cartas que se pueden jugar
+     * 
+     * @param mesa Mesa actual
+     * @return ArrayList con el índice de las cartas que se pueden jugar
+     */
+    public ArrayList<Integer> posiblesJugadas(Mesa mesa) {
+        return mano.posiblesJugadas(mesa);
+    }
+    
+    /**
+     * Método para añadir una carta a la mano del jugador
+     *
+     * @param carta Carta a añadir
+     */
+    public void añadirCarta(Carta carta) {
+        mano.añadirCarta(carta);
+    }
+    
+    /**
+     * Método para poner una carta de la mano en la mesa del jugador
+     * y comprobar si es el 1 de Oros
+     * 
+     * @param mesa Mesa actual
+     * @param carta Carta escogida
+     */
+    public void ponerCarta(Mesa mesa, Carta carta) {
+        mano.ponerCarta(mesa, carta);
+    }
+    
+    /**
+     * Método para mostrar las cartas en la mano del jugador de manera
+     * visual
+     */
+    public void mostrarMano() {
+        mano.mostrar();
+    }
+    
+    /**
+     * Función para comprobar si se puso el As de Oros
+     * 
+     * @return puntosOro Booleano para mostrar si se ha puesto el As de Oros
+     */
+    public boolean pusoAsOros() {
+        return mano.getPuntosOro();
+    }
+                
+    /**
+    * Reseteamos el flag del As de Oros
+    */
+    public void resetearFlagAsDeOros() {
+        mano.setPuntosOro(false);
+    }
     
     // Anotaciones profesorado:
     // -----------------------------------
