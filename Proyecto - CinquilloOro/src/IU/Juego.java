@@ -81,8 +81,8 @@ public class Juego {
         do {
             ES.clearScreen();
             jugador_actual = jugador.get(getJugadorActual(turno));
-            getMesaActual(mesa);
-            getManoActual(jugador_actual);
+            mostrarMesaActual(mesa);
+            mostrarManoActual(jugador_actual);
 
             accion = elegirAccion(
                     getPosiblesJugadasActuales(jugador_actual, mesa),
@@ -143,7 +143,7 @@ public class Juego {
      * Método para conseguir el estado de la mesa actual
      * @param mesa Objeto Mesa actual
      */
-    private static void getMesaActual(Mesa mesa) {
+    private static void mostrarMesaActual(Mesa mesa) {
         System.out.println("Estado actual de la Mesa:");
         System.out.println("--------------------------------------------------");
         mesa.mostrar();
@@ -165,7 +165,7 @@ public class Juego {
      * Método para mostrar la mano actual del jugador
      * @param jugador 
      */
-    private static void getManoActual(Jugador jugador) {
+    private static void mostrarManoActual(Jugador jugador) {
         System.out.println("Cartas en la mano del Jugador " + jugador.getNombre() + ":");
         System.out.println("--------------------------------------------------");
         jugador.mostrarMano();
