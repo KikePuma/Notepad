@@ -9,11 +9,10 @@ import java.util.ArrayList;
 // las cartas posibles a colocar selecciona una, consultar/modificar puntos, etc
 public class Jugador {
 
+    private int puntos;
     private Mano mano;
     private String nombre;
-
-    private int puntos;
-
+    
     /**
      * Constructor de la clase Jugador
      *
@@ -59,6 +58,13 @@ public class Jugador {
      */
     public void setMano(Mano mano) {
         this.mano = mano;
+    }
+    
+    /**
+     * Método para vaciar la mano
+     */
+    public void vaciarMano() {
+        this.mano = new Mano();
     }
 
     /**
@@ -128,14 +134,7 @@ public class Jugador {
             mano.remove(carta);
             mesa.insertarCarta(carta);
         }
-      
-        /**
-         * Método para resetear la mano del jugador y dejarla vacía
-         */
-        public void vaciarMano() {
-            mano = new ArrayList<>();
-        }
-        
+
         /**
          * Función para obtener si la mano del jugador está vacía
          *
