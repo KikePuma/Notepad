@@ -1,6 +1,10 @@
 package core;
 
 // Anotaciones profesorado:
+
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 // -----------------------------------
 // Representa la baraja del juego, con 48 cartas (12 de cada palo),
 // desordenadas. Estructura: Las cartas se guardarán en un array estático.
@@ -35,7 +39,13 @@ public class Baraja {
      * Método para barajar las cartas
      */
     private void barajar() {
-
+        Random aleatorio = ThreadLocalRandom.current();
+        for (int i = cartas.length - 1; i > 0; i--) {
+          int index = aleatorio.nextInt(i + 1);
+          Carta aux = cartas[index];
+          cartas[index] = cartas[i];
+          cartas[i] = aux;
+        }
     }
     
     /**
