@@ -143,4 +143,13 @@ public class Mesa {
         System.out.println(" |_____| |_____| |_____| |_____|");
         System.out.println("");
     }
+    
+    public ArrayDeque<Integer> getCartas(String palo) {
+        int index = -1;
+        if("oros".equals(palo)) index = 0;
+        if("copas".equals(palo)) index = 1;
+        if("bastos".equals(palo)) index = 2;
+        if("espadas".equals(palo)) index = 3;
+        return palos.get(index);
+    }
 }
