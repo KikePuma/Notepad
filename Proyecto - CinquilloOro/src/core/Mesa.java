@@ -36,7 +36,7 @@ public class Mesa {
         else if(carta.getPalo().equalsIgnoreCase("bastos")) palo = 2;
         else if(carta.getPalo().equalsIgnoreCase("espadas")) palo = 3;
         
-        if(carta.getNumero() > 6)
+        if(carta.getNumero() > 5)
             palos.get(palo).addLast(carta.getNumero());
         else
             palos.get(palo).addFirst(carta.getNumero());
@@ -49,9 +49,20 @@ public class Mesa {
     public ArrayList<Carta> posiblesJugadas() {
         ArrayList<Carta> posibles = new ArrayList<>();
         
+        /*
+        for(ArrayDeque<Integer> palo: palos) {
+            for(Integer i: palo)
+                System.out.print(i + " ");
+            if(!palo.isEmpty())
+                System.out.println("|| " + palo.getFirst() + " " + palo.getLast());
+            else
+                System.out.println("");
+        }
+        */
+
         if(isEmpty())
             posibles.add(new Carta("oros", 5));
-        else
+        else {
             for(short i = 0; i < 4; i++) {
                 String palo = null;
                 switch(i) {
@@ -64,16 +75,20 @@ public class Mesa {
                 if(palos.get(i).isEmpty())
                     posibles.add(new Carta(palo, 5));
                 else {
+                    
                     if(!palos.get(i).getFirst().equals(1)) {
-                        int num = ((int) palos.get(i).getFirst()) - 1;
+                        int num = ((int) palos.get(i).getFirst() -1);
                         posibles.add(new Carta(palo, num));
+                        //System.out.println("Posible " + palo + " por arriba: " + num);
                     }
                     if(!palos.get(i).getLast().equals(12)) {
-                        int num = ((int) palos.get(i).getFirst()) + 1;
+                        int num = ((int) palos.get(i).getLast() + 1);
                         posibles.add(new Carta(palo, num));
+                        //System.out.println("Posible " + palo + " por abajo: " + num);
                     }
                 }
             }
+        }
                     
         return posibles;
     }
@@ -91,35 +106,25 @@ public class Mesa {
         for(int i = 0; i < 13; i++) {
             System.out.print(" |  ");
             
-            if(palos.get(0).contains(i))
-                System.out.print(i);
+            for(short j = 0; j < 4; j++) {
+                if(palos.get(j).contains(i)) {
+                if(i < 10)
+                    System.out.print(i);
+                else
+                    System.out.print("\b" + i);
+            }
             else
                 System.out.print(" ");
             
-            System.out.print("  | |  ");
-            
-            if(palos.get(1).contains(i))
-                System.out.print(i);
+            if(j == 3)
+                System.out.println("  |");
             else
-                System.out.print(" ");
+                System.out.print("  | |  ");
+            }
             
-            System.out.print("  | |  ");
-            
-            if(palos.get(2).contains(i))
-                System.out.print(i);
-            else
-                System.out.print(" ");
-            
-            System.out.print("  | |  ");
-            
-            if(palos.get(3).contains(i))
-                System.out.print(i);
-            else
-                System.out.print(" ");
-            
-            System.out.println("  |");
         }
-        
+
+        System.out.println(" |     | |     | |     | |     |");
         System.out.println(" |_____| |_____| |_____| |_____|");
         System.out.println("");
     }

@@ -9,9 +9,9 @@ import java.util.ArrayList;
  */
 public class Juego {
 
-    private static int puntosOro = 2;
-    private static final short puntosPartida = 4;
+    private static int puntosOro = 0;
     private static final short NUM_JUGADORES = 4;
+    private static final short PUNTOS_PARTIDA = 4;
 
     private static ArrayList<Jugador> jugador = null;
 
@@ -21,9 +21,9 @@ public class Juego {
      */
     public static void inicioJuego() {
         insertarJugadores();
-        do {
-            jugar();
-        } while (false); // cambiar esto
+        while (jugar() &&
+                siguientePartida())
+        { }
     }
 
     private static void insertarJugador() {
@@ -38,12 +38,18 @@ public class Juego {
         } while (jugador.size() != NUM_JUGADORES);
     }
 
-    private static void jugar() {
+    private static boolean jugar() {
         short accion;
         int turno = 0;
         Mesa mesa = new Mesa();
         Jugador jugador_actual;
         Baraja baraja = new Baraja();
+        
+        puntosOro = puntosOro + 2;
+        
+        jugador.forEach((j) -> {
+            j.getMano().vaciarMano();
+        });
 
         baraja.repartir(jugador);
         do {
@@ -60,9 +66,31 @@ public class Juego {
             if (accion == 0) {
                 turno++;
             }
-        } while (accion != 2);
+        } while (accion != 2 && !jugador_actual.getMano().isEmpty());
+        
+        ES.clearScreen();
+        System.out.println("PARTIDA FINALIZADA");
+        System.out.println("--------------------------------------------------\n");
+        getMesaActual(mesa);
+        
+        if(jugador_actual.getMano().isEmpty())
+            jugador_actual.setPuntos(jugador_actual.getPuntos() + PUNTOS_PARTIDA);
+        
+        return jugador_actual.getMano().isEmpty();
     }
 
+    private static boolean siguientePartida() {
+        System.out.println("Marcador");
+        System.out.println("--------------------------------------------------\n");
+        for(Jugador player: jugador)
+            System.out.println(player.getNombre() + " :: " + player.getPuntos() + " puntos");
+        System.out.println("\n--------------------------------------------------\n");
+        
+        char mander = ES.leeString("¿Deseas jugar otra partida? [S/n] ").trim().charAt(0);
+        
+        return mander == 's' || mander == 'S';
+    }
+    
     private static int getJugadorActual(int turno) {
         int id;
         id = turno % NUM_JUGADORES;
@@ -115,6 +143,7 @@ public class Juego {
         // 0 - Siguiente turno
         // 1 - Repetir turno
         // 2 - Salir del juego
+
         short accion = 1;
 
         if (opcion_elegida == 99) {
@@ -125,6 +154,11 @@ public class Juego {
             }
         } else if (opcion_elegida < opciones.size()) {
             jugador.getMano().ponerCarta(mesa, jugador.getMano().getCartas().get(opciones.get(opcion_elegida)));
+            if(jugador.getMano().getPuntosOro()) {
+                jugador.getMano().setPuntosOro(false);
+                jugador.setPuntos(jugador.getPuntos() + puntosOro);
+                puntosOro = 0;
+            }
             accion = 0;
         }
 
