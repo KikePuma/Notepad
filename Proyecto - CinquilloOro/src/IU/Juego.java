@@ -97,7 +97,7 @@ public class Juego {
         ES.clearScreen();
         System.out.println("PARTIDA FINALIZADA");
         System.out.println("--------------------------------------------------\n");
-        getMesaActual(mesa);
+        mostrarMesaActual(mesa);
         
         if(jugador_actual.ManoIsEmpty())
             jugador_actual.setPuntos(jugador_actual.getPuntos() + PUNTOS_PARTIDA);
