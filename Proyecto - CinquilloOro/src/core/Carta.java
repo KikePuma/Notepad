@@ -1,24 +1,40 @@
 
 package core;
-/**
- * Representa una carta de la baraja, formada por un numero(1..12) y un palo(oros, copas, espadas y bastos) 
- */
+
+// Anotaciones profesorado:
+// -----------------------------------
+// Representa una carta de la baraja, formada por un numero(1..12) y un
+// palo(oros, copas, espadas y bastos) 
 public class Carta {
 		
     int numero;
     String palo;
         
+    /**
+     * Constructor de la clase Carta
+     */
     public Carta() {
         this.palo = null;
         this.numero = 0;
     }
     
+    /**
+     * Constructor de la clase Carta
+     *
+     * @param palo Palo de la carta
+     * @param numero Número de la carta
+     */
     public Carta(String palo, int numero)
     {
         this.palo = palo;
         this.numero = numero;
     }
 
+    /**
+     * Función para mostrar el dibujo de la carta en ASCII
+     *
+     * @return Array con cada una de las lineas del dibujo de la carta en formato ASCII
+     */
     public String[] mostrarDibujo(){
         String carta_visual[] = {
             "  _______  ",
@@ -27,9 +43,6 @@ public class Carta {
             " |   X   | ",
             " |_______| "
         };
-        
-        
-        char mander; // char auxiliar
         
         if(this.numero < 10)
             carta_visual[2] = carta_visual[2].replace("xXx", " " + this.numero + " ");
@@ -45,22 +58,47 @@ public class Carta {
         return carta_visual;
     }
 
+    /**
+     * Getter de la variable numero
+     *
+     * @return Numero de la carta
+     */
     public int getNumero() {
         return numero;
     }
 
+    /**
+     * Setter de la variable numero
+     *
+     * @param numero Numero de la carta
+     */
     public void setNumero(int numero) {
         this.numero = numero;
     }
 
+    /**
+     * Getter de la variable palo
+     *
+     * @return Palo de la carta
+     */
     public String getPalo() {
         return palo;
     }
 
+    /**
+     * Setter de la variable palo
+     *
+     * @param palo Palo de la carta
+     */
     public void setPalo(String palo) {
         this.palo = palo;
     }
     
+    /** 
+     * Función que retorna la carta en formato cadena de texto
+     * 
+     * @return Cadena de texto con la información sobre la carta
+     */
     @Override
     public String toString() {
         return this.numero + "" + Character.toUpperCase(this.palo.charAt(0));

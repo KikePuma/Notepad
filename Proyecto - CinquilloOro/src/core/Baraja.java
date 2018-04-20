@@ -4,39 +4,57 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Collections;
 
-/**
- * Representa la baraja del juego, con 48 cartas (12 de cada palo),
- * desordenadas. Estructura: Las cartas se guardarán en un array estático.
- * Funcionalidad: Crear la baraja, barajar, quitar una carta, etc
- */
+// Anotaciones profesorado:
+// -----------------------------------
+// Representa la baraja del juego, con 48 cartas (12 de cada palo),
+// desordenadas. Estructura: Las cartas se guardarán en un array estático.
 public class Baraja {
 
     private static LinkedList<Carta> cartas;
-    private static final String palos[] = {"oros", "copas", "espadas", "bastos"};
+    private static final String[] PALOS = {"oros", "copas", "espadas", "bastos"};
 
+    /**
+     * Constructor de la clase Baraja
+     */
     public Baraja() {
         crearBaraja();
         barajar();
     }
 
+    /**
+     * Método para crear una nueva baraja
+     */
     private void crearBaraja() {
         cartas = new LinkedList<>();
 
-        for (String palo : palos) {
+        for (String palo : PALOS) {
             for (int j = 1; j < 13; j++) {
                 cartas.addLast(new Carta(palo, j));
             }
         }
     }
 
+    /**
+     * Método para barajar las cartas
+     */
     private void barajar() {
         Collections.shuffle(cartas);
     }
 
+    /**
+     * Función para coger una carta
+     * 
+     * @return La última carta en la baraja
+     */
     private Carta cogerCarta() {
         return cartas.pollLast();
     }
 
+    /**
+     * Método para repartir las cartas entre los distintos jugadores
+     *
+     * @param jugadores Jugadores actuales
+     */
     public void repartir(ArrayList<Jugador> jugadores) {
         while (!cartas.isEmpty()) {
 
@@ -51,6 +69,11 @@ public class Baraja {
         }
     }
 
+    /** 
+     * Función que retorna la baraja en formato cadena de texto
+     * 
+     * @return Cadena de texto con la información sobre la baraja
+     */
     @Override
     public String toString() {
         String msg = "";

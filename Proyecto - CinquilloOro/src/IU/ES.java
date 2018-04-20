@@ -2,13 +2,19 @@ package IU;
 
 import java.util.Scanner;
 
+/**
+ * 
+ * @author Diego Enrique Fontán Lorenzo
+ * @author Julio Patricio da Silva
+ */
+
 public class ES {
 
     /**
-     * Lee un num. de teclado
+     * Lee un número del teclado
      *
-     * @param msg El mensaje a visualizar.
-     * @return El num., como entero
+     * @param msg El mensaje a visualizar antes de recibir el número entero
+     * @return El número como entero
      */
     public static int leeNum(String msg) {
         boolean repite;
@@ -29,6 +35,12 @@ public class ES {
         return toret;
     }
 
+    /**
+     * Lee una cadena de texto del teclado
+     *
+     * @param msg El mensaje a visualizar antes de recibir la cadena de texto
+     * @return Una cadena de texto
+     */
     public static String leeString(String msg) {
         String toret = "";
         Scanner teclado = new Scanner(System.in);
@@ -40,6 +52,9 @@ public class ES {
         return toret;
     }
 
+    /**
+     * Método para limpiar la pantalla
+     */
     public static void clearScreen() {
         for (int i = 0; i < 50; ++i) {
             System.out.println();

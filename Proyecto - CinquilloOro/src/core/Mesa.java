@@ -3,17 +3,22 @@ package core;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-/**
-* Representa la mesa de juego, donde los jugadores colocan las cartas en cada turno.
-* Estructura: Se utilizará un array estático de dobles colas (Deque), una para cada palo
-* Funcionalidad: insertar la carta en su lugar correcto automáticamente, visualizar, etc
-*/
-
+// Anotaciones profesorado:
+// -----------------------------------
+// Representa la mesa de juego, donde los jugadores colocan las cartas en
+// cada turno.
+// Estructura: Se utilizará un array estático de dobles colas (Deque), una
+// para cada palo
+// Funcionalidad: insertar la carta en su lugar correcto automáticamente,
+// visualizar, etc
 public class Mesa {
     
     private static ArrayList<ArrayDeque> palos;
     private static ArrayDeque<Integer> oros, copas, bastos, espadas;
     
+    /**
+     * Constructor de la clase Mesa
+     */
     public Mesa() {
         palos = new ArrayList<>();
         
@@ -28,6 +33,11 @@ public class Mesa {
         palos.add(espadas);
     }
     
+    /**
+     * Método para insertar una carta en la mesa
+     *
+     * @param carta Nueva carta a insertar en la mesa
+     */
     public void insertarCarta(Carta carta) {
         int palo = -1;
         
@@ -42,23 +52,22 @@ public class Mesa {
             palos.get(palo).addFirst(carta.getNumero());
     }
     
+    /**
+     * Función para saber si la mesa está vacía
+     *
+     * @return True si la mesa está vacía
+     */
     public boolean isEmpty() {
         return oros.isEmpty() && copas.isEmpty() && bastos.isEmpty() && espadas.isEmpty();
     }
     
+    /**
+     * Función para mostrar las posibles jugadas actuales
+     *
+     * @return Array con las posibles jugadas
+     */
     public ArrayList<Carta> posiblesJugadas() {
         ArrayList<Carta> posibles = new ArrayList<>();
-        
-        /*
-        for(ArrayDeque<Integer> palo: palos) {
-            for(Integer i: palo)
-                System.out.print(i + " ");
-            if(!palo.isEmpty())
-                System.out.println("|| " + palo.getFirst() + " " + palo.getLast());
-            else
-                System.out.println("");
-        }
-        */
 
         if(isEmpty())
             posibles.add(new Carta("oros", 5));
@@ -93,6 +102,9 @@ public class Mesa {
         return posibles;
     }
     
+    /**
+     * Método para mostrar la mesa en formato ASCII
+     */
     public void mostrar() {
         
         System.out.println("  _____   _____   _____   _____ ");

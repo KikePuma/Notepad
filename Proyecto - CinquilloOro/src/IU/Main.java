@@ -2,9 +2,20 @@ package IU;
 
 import static IU.Juego.inicioJuego;
 
-// @TODOs Exceptions, fallo al predecir jugadas
+/**
+ * 
+ * @author Diego Enrique Fontán Lorenzo
+ * @author Julio Patricio da Silva
+ */
+
+// TODO: Exceptions
 public class Main {
 
+    /**
+     * Método principal
+     * 
+     * @param args Comandos de consola
+     */
     public static void main(String[] args) {
         inicioJuego();
     }

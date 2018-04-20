@@ -2,11 +2,11 @@ package core;
 
 import java.util.ArrayList;
 
-/**
- * Representa a un jugador de la partida, identificado por el nombre, las cartas
- * de la mano y puntos acumulados Funcionalidad: recibir las 12 cartas, de entre
- * las cartas posibles a colocar selecciona una, consultar/modificar puntos, etc
- */
+// Anotaciones profesorado:
+// -----------------------------------
+// Representa a un jugador de la partida, identificado por el nombre, las cartas
+// de la mano y puntos acumulados Funcionalidad: recibir las 12 cartas, de entre
+// las cartas posibles a colocar selecciona una, consultar/modificar puntos, etc
 public class Jugador {
 
     private Mano mano;
@@ -14,59 +14,113 @@ public class Jugador {
 
     private int puntos;
 
+    /**
+     * Constructor de la clase Jugador
+     *
+     * @param nombre Nombre del jugador
+     */
     public Jugador(String nombre) {
         this.nombre = nombre;
         this.mano = new Mano();
     }
 
+    /**
+     * Getter de la variable nombre
+     *
+     * @return Nombre del jugador
+     */
     public String getNombre() {
         return this.nombre;
     }
 
+    /**
+     * Setter de la variable nombre
+     *
+     * @param nombre Nombre del jugador
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Getter de la variable mano
+     *
+     * @return Mano del jugador
+     */
     public Mano getMano() {
         return mano;
     }
 
+    /**
+     * Setter de las cartas de la mano
+     *
+     * @param mano Mano del jugador
+     */
     public void setMano(Mano mano) {
         this.mano = mano;
     }
 
+    /**
+     * Getter de las cartas de la mano
+     * 
+     * @return Cartas actuales en la mano del jugador
+     */
     public ArrayList<Carta> getCartas() {
         return this.mano.getCartas();
     }
 
+    /**
+     * Getter de la variable puntos
+     *
+     * @return Puntos actuales del jugador en todas las partidas
+     */
     public int getPuntos() {
         return puntos;
     }
 
+    /**
+     * Setter de la variable puntos
+     * 
+     * @param puntos Puntos actuales del jugador en todas las partidas
+     */
     public void setPuntos(int puntos) {
         this.puntos = puntos;
     }
 
     
-    
-    /**
-     * Representa las cartas de cada jugador en cada momento de la partida.
-     * Estructura: se almacenarán en un array estático. Funcionalidad: añadir
-     * una carta, quitar una carta, devolver cartas posibles, visualizar, etc
-     */
+    // Anotaciones profesorado:
+    // -----------------------------------
+    // Representa las cartas de cada jugador en cada momento de la partida.
+    // Estructura: se almacenarán en un array estático. Funcionalidad: añadir
+    // una carta, quitar una carta, devolver cartas posibles, visualizar, etc
     public class Mano {
 
         private boolean puntosOro;
         private ArrayList<Carta> mano;
 
+        /**
+         * Constructor de la clase Mano
+         */
         public Mano() {
             this.mano = new ArrayList<>();
         }
 
+        /**
+         * Método para añadir una carta a la mano del jugador
+         *
+         * @param carta Carta a añadir
+         */
         public void añadirCarta(Carta carta) {
             mano.add(carta);
         }
 
+        /**
+         * Método para poner una carta de la mano en la mesa del jugador
+         * y comprobar si es el 1 de Oros
+         * 
+         * @param mesa Mesa actual
+         * @param carta Carta escogida
+         */
         public void ponerCarta(Mesa mesa, Carta carta) {
             if (carta.getPalo().equalsIgnoreCase("oros") && carta.getNumero() == 1)
                 this.puntosOro = true;
@@ -74,15 +128,29 @@ public class Jugador {
             mesa.insertarCarta(carta);
         }
       
+        /**
+         * Método para resetear la mano del jugador y dejarla vacía
+         */
         public void vaciarMano() {
             mano = new ArrayList<>();
         }
         
+        /**
+         * Función para obtener si la mano del jugador está vacía
+         *
+         * @return True si la mano del jugador está vacía
+         */
         public boolean isEmpty() {
             return mano.isEmpty();
         }
 
-        // POR FAVOR, ARREGLAR ESTE DESASTRE, ES TRADE Y TENGO SUEÑO
+        /**
+         * Función para coger una carta de la mano del jugador
+         * 
+         * @param palo Palo de la carta a escoger
+         * @param numero Numero de la carta a escoger
+         * @return Carta elegida de la mano de jugador
+         */
         public Carta cogerCarta(String palo, int numero) {
             Carta seleccionada = null;
 
@@ -97,6 +165,10 @@ public class Jugador {
             return seleccionada;
         }
 
+        /**
+         * Método para mostrar las cartas en la mano del jugador de manera
+         * visual
+         */
         public void mostrar() {
             String mano_visual[] = {"", "", "", "", ""};
 
@@ -117,10 +189,21 @@ public class Jugador {
             System.out.println("");
         }
 
+        /**
+         * Getter de las cartas en la mano
+         * 
+         * @return Cartas en la mano del jugador
+         */
         public ArrayList<Carta> getCartas() {
             return this.mano;
         }
 
+        /**
+         * Función para deducir las posibles cartas que se pueden jugar
+         * 
+         * @param mesa Mesa actual
+         * @return ArrayList con el índice de las cartas que se pueden jugar
+         */
         public ArrayList<Integer> posiblesJugadas(Mesa mesa) {
             ArrayList<Carta> posibles = mesa.posiblesJugadas();
             ArrayList<Integer> index_cartas = new ArrayList<>();
@@ -137,10 +220,20 @@ public class Jugador {
             return index_cartas;
         }
 
+        /**
+         * Getter de la variable puntosOro
+         * 
+         * @return puntosOro Booleano para mostrar si se ha puesto el 1 de Oros
+         */
         public boolean getPuntosOro() {
             return this.puntosOro;
         }
 
+        /**
+         * Setter de la variable puntosOro
+         * 
+         * @param puntosOro Booleano para mostrar si se ha puesto el 1 de Oros
+         */
         public void setPuntosOro(boolean puntosOro) {
             this.puntosOro = puntosOro;
         }
