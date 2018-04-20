@@ -52,7 +52,7 @@ public class Baraja {
      * Funcion para saber si la baraja está vacía
      * @return True si la baraja está vacía
      */
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return ultima_carta == 0;
     }
 
@@ -61,7 +61,7 @@ public class Baraja {
      * 
      * @return La última carta en la baraja
      */
-    private Carta cogerCarta() {
+    public Carta cogerCarta() {
         Carta ultima = null;
         if(!isEmpty()) {
             ultima_carta--;
@@ -69,27 +69,6 @@ public class Baraja {
         }
         return ultima;
     }
-
-    /**
-     * Método para repartir las cartas entre los distintos jugadores
-     *
-     * @param jugadores Jugadores actuales
-     */
-    /**
-    public void repartir(ArrayList<Jugador> jugadores) {
-        while (!cartas.isEmpty()) {
-
-            // Functional Operations
-            // ---------------------------------------------
-            // for(Jugador jugador: jugadores)
-            //   if(!cartas.isEmpty())
-            //     jugador.mano.añadirCarta(cogerCarta());
-            jugadores.stream().filter((jugador) -> (!cartas.isEmpty())).forEach((jugador) -> {
-                jugador.getMano().añadirCarta(cogerCarta());
-            });
-        }
-    }
-    * */
 
     /** 
      * Función que retorna la baraja en formato cadena de texto
