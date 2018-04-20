@@ -8,7 +8,8 @@ import static IU.Juego.inicioJuego;
  * @author Julio Patricio da Silva
  */
 
-// TODO: Exceptions
+// TODO: Mesa array de Array Deques
+// TODO: Guardar carta entera ArrayDeque
 public class Main {
 
     /**
