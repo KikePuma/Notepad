@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 
 // Anotaciones profesorado:
 // -----------------------------------
@@ -22,22 +21,10 @@ public class Mesa {
     public Mesa() {
         palos = new ArrayDeque[4];
         
-        oros = new ArrayDeque<>();
-        copas = new ArrayDeque<>();
-        bastos = new ArrayDeque<>();
-        espadas = new ArrayDeque<>();
-        
-        /*
-        palos.add(oros);
-        palos.add(copas);
-        palos.add(bastos);
-        palos.add(espadas);
-        */
-        
-        palos[0] = oros;
-        palos[1] = copas;
-        palos[2] = bastos;
-        palos[3] = espadas;
+        palos[0] = oros = new ArrayDeque<>();
+        palos[1] = copas = new ArrayDeque<>();
+        palos[2] = bastos = new ArrayDeque<>();
+        palos[3] = espadas = new ArrayDeque<>();
     }
     
     /**
@@ -54,10 +41,8 @@ public class Mesa {
         else if(carta.getPalo().equalsIgnoreCase("espadas")) palo = 3;
         
         if(carta.getNumero() > 5)
-            //palos.get(palo).addLast(carta.getNumero());
             palos[palo].addLast(carta.getNumero());
         else
-            //palos.get(palo).addFirst(carta.getNumero());
             palos[palo].addFirst(carta.getNumero());
     }
     
