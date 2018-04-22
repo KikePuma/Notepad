@@ -105,6 +105,7 @@ public class Juego {
         System.out.println("PARTIDA FINALIZADA");
         System.out.println("--------------------------------------------------\n");
         mostrarMesaActual(mesa);
+        showMarcador();
         
         if(jugador_actual.ManoIsEmpty())
             jugador_actual.setPuntos(jugador_actual.getPuntos() + PUNTOS_PARTIDA);
@@ -116,9 +117,7 @@ public class Juego {
      * Función con la pantalla de marcadores y el manejo de la siguiente partida
      * @return True si se decide jugar una nueva partida
      */
-    private static boolean siguientePartida() {
-        showMarcador();
-        
+    private static boolean siguientePartida() {        
         char mander = ES.leeString("¿Deseas jugar otra partida? [S/n] ").trim().charAt(0);
         
         return mander == 's' || mander == 'S';
