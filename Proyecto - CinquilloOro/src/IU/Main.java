@@ -8,9 +8,6 @@ import static IU.Juego.inicioJuego;
  * @author Julio Patricio da Silva
  */
 
-// TODO: Mesa array de Array Deques
-// TODO: Guardar carta entera ArrayDeque
-// TODO: Cartas mano de Array Dinamico a Estatico
 public class Main {
 
     /**
