@@ -13,24 +13,31 @@ import java.util.ArrayList;
 // visualizar, etc
 public class Mesa {
     
-    private static ArrayList<ArrayDeque> palos;
+    private static ArrayDeque[] palos;
     private static ArrayDeque<Integer> oros, copas, bastos, espadas;
     
     /**
      * Constructor de la clase Mesa
      */
     public Mesa() {
-        palos = new ArrayList<>();
+        palos = new ArrayDeque[4];
         
         oros = new ArrayDeque<>();
         copas = new ArrayDeque<>();
         bastos = new ArrayDeque<>();
         espadas = new ArrayDeque<>();
         
+        /*
         palos.add(oros);
         palos.add(copas);
         palos.add(bastos);
         palos.add(espadas);
+        */
+        
+        palos[0] = oros;
+        palos[1] = copas;
+        palos[2] = bastos;
+        palos[3] = espadas;
     }
     
     /**
@@ -47,9 +54,11 @@ public class Mesa {
         else if(carta.getPalo().equalsIgnoreCase("espadas")) palo = 3;
         
         if(carta.getNumero() > 5)
-            palos.get(palo).addLast(carta.getNumero());
+            //palos.get(palo).addLast(carta.getNumero());
+            palos[palo].addLast(carta.getNumero());
         else
-            palos.get(palo).addFirst(carta.getNumero());
+            //palos.get(palo).addFirst(carta.getNumero());
+            palos[palo].addFirst(carta.getNumero());
     }
     
     /**
@@ -78,7 +87,7 @@ public class Mesa {
             System.out.print(" |  ");
             
             for(short j = 0; j < 4; j++) {
-                if(palos.get(j).contains(i)) {
+                if(palos[j].contains(i)) {
                     if(i < 10)
                         System.out.print(i);
                     else
@@ -105,6 +114,6 @@ public class Mesa {
         if("copas".equals(palo)) index = 1;
         if("bastos".equals(palo)) index = 2;
         if("espadas".equals(palo)) index = 3;
-        return palos.get(index);
+        return palos[index];
     }
 }
