@@ -12,16 +12,19 @@ public class Jugador {
     private int puntos;
     private Mano mano;
     private String nombre;
+    private final short max_cartas;
     
     /**
      * Constructor de la clase Jugador
      *
      * @param nombre Nombre del jugador
+     * @param max_cartas Maximas cartas que puede tener un jugador en la mano
      */
-    public Jugador(String nombre) {
+    public Jugador(String nombre, short max_cartas) {
         this.puntos = 0;
         this.nombre = nombre;
-        this.mano = new Mano();
+        this.max_cartas = max_cartas;
+        this.mano = new Mano(max_cartas);
     }
 
     /**
@@ -46,7 +49,7 @@ public class Jugador {
      * Método para vaciar la mano
      */
     public void vaciarMano() {
-        this.mano = new Mano();
+        this.mano = new Mano(this.max_cartas);
     }
     
     /**
@@ -63,7 +66,7 @@ public class Jugador {
      * 
      * @return Cartas actuales en la mano del jugador
      */
-    public ArrayList<Carta> getCartas() {
+    public Carta[] getCartas() {
         return this.mano.getCartas();
     }
 
@@ -146,14 +149,17 @@ public class Jugador {
     // una carta, quitar una carta, devolver cartas posibles, visualizar, etc
     public class Mano {
 
+        private short mano_size;
         private boolean puntosOro;
-        private final ArrayList<Carta> mano;
+        private final Carta[] cartas;
 
         /**
          * Constructor de la clase Mano
+         * @param max_cartas Máximas cartas que puede tener un jugador
          */
-        public Mano() {
-            this.mano = new ArrayList<>();
+        public Mano(short max_cartas) {
+            this.mano_size = 0;
+            this.cartas = new Carta[max_cartas];
         }
 
         /**
@@ -162,7 +168,8 @@ public class Jugador {
          * @param carta Carta a añadir
          */
         public void añadirCarta(Carta carta) {
-            mano.add(carta);
+            this.cartas[mano_size] = carta;
+            this.mano_size++;
         }
 
         /**
@@ -175,8 +182,30 @@ public class Jugador {
         public void ponerCarta(Mesa mesa, Carta carta) {
             if (carta.getPalo().equalsIgnoreCase("oros") && carta.getNumero() == 1)
                 this.puntosOro = true;
-            mano.remove(carta);
+            eliminar(carta);
             mesa.insertarCarta(carta);
+        }
+        
+        /**
+         * Función para eliminar una carta de la mano
+         * @param carta Carta a eliminar
+         * @return True si se ha conseguido eliminar la carta
+         */
+        private boolean eliminar(Carta carta) {
+            boolean resultado = false;
+            for (int i = 0; i < this.mano_size; i++) {
+                if (!resultado
+                        && this.cartas[i].getPalo().equalsIgnoreCase(carta.getPalo())
+                        && this.cartas[i].getNumero() == carta.getNumero()) {
+                    for (int j = i; j < this.mano_size - 1; j++) {
+                        this.cartas[j] = this.cartas[j+1];
+                    }
+                    this.cartas[this.mano_size - 1] = null;
+                    resultado = true;
+                }
+            }
+            if(resultado) this.mano_size--;
+            return resultado;
         }
 
         /**
@@ -185,7 +214,7 @@ public class Jugador {
          * @return True si la mano del jugador está vacía
          */
         public boolean isEmpty() {
-            return mano.isEmpty();
+            return this.mano_size == 0;
         }
 
         /**
@@ -198,7 +227,7 @@ public class Jugador {
         public Carta cogerCarta(String palo, int numero) {
             Carta seleccionada = null;
 
-            for (Carta carta : mano) {
+            for (Carta carta : this.cartas) {
                 if (seleccionada == null
                         && carta.getPalo().equalsIgnoreCase(palo)
                         && carta.getNumero() == numero) {
@@ -216,15 +245,11 @@ public class Jugador {
         public void mostrar() {
             String mano_visual[] = {"", "", "", "", ""};
 
-            // Functional Operations
-            // ---------------------------------------------
-            // for(Carta carta: this.mano) {
-            //   String dibujo_carta[] = carta.mostrarDibujo();
-            this.mano.stream().map((carta) -> carta.mostrarDibujo()).forEach((dibujo_carta) -> {
-                for (int i = 0; i < mano_visual.length; i++) {
+            for(short c = 0; c < mano_size; c++) {
+                String dibujo_carta[] = cartas[c].mostrarDibujo();
+                for (int i = 0; i < mano_visual.length; i++)
                     mano_visual[i] += dibujo_carta[i];
-                }
-            });
+            }
 
             for (String linea : mano_visual) {
                 System.out.println(linea);
@@ -238,8 +263,8 @@ public class Jugador {
          * 
          * @return Cartas en la mano del jugador
          */
-        public ArrayList<Carta> getCartas() {
-            return this.mano;
+        public Carta[] getCartas() {
+            return this.cartas;
         }
 
         /**
@@ -288,10 +313,10 @@ public class Jugador {
             // Comprobamos cuales de esas cartas tenemos en la mano
             ArrayList<Integer> index_cartas = new ArrayList<>();
 
-            for (short i = 0; i < this.mano.size(); i++) {
+            for (short i = 0; i < this.mano_size; i++) {
                 for (Carta carta : posibles) {
-                    if (carta.getPalo().equalsIgnoreCase(this.mano.get(i).getPalo())
-                            && carta.getNumero() == this.mano.get(i).getNumero()) {
+                    if (carta.getPalo().equalsIgnoreCase(this.cartas[i].getPalo())
+                            && carta.getNumero() == this.cartas[i].getNumero()) {
                         index_cartas.add((int) i);
                     }
                 }

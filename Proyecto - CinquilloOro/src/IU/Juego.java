@@ -44,7 +44,11 @@ public class Juego {
      */
     private static void insertarJugador() {
         int numJugador = jugador.size() + 1;
-        jugador.add(new Jugador(ES.leeString("Inserta al Jugador " + numJugador + ": ")));
+        jugador.add(new Jugador(
+                ES.leeString("Inserta al Jugador " + numJugador + ": "),
+                (short) ((48 / NUM_JUGADORES) + 1) // Implementacion para ver
+                // el máximo numero de cartas que puede tener un jugador en la mano
+        ));
     }
 
     /**
@@ -199,7 +203,7 @@ public class Juego {
                 posibles_jugadas.add(i);
                 return i;
             }).forEachOrdered((i) -> {
-                Carta carta = jugador.getCartas().get(i);
+                Carta carta = jugador.getCartas()[i];
                 System.out.println("[" + posibles_jugadas.indexOf(i) + "] " + carta.getNumero() + " " + carta.getPalo());
             });
         }
@@ -236,7 +240,7 @@ public class Juego {
                 accion = 0;
             }
         } else if (opcion_elegida < opciones.size()) {
-            jugador.ponerCarta(mesa, jugador.getCartas().get(opciones.get(opcion_elegida)));
+            jugador.ponerCarta(mesa, jugador.getCartas()[opciones.get(opcion_elegida)]);
             if(jugador.pusoAsOros()) {
                 jugador.resetearFlagAsDeOros();
                 jugador.setPuntos(jugador.getPuntos() + puntosOro);
