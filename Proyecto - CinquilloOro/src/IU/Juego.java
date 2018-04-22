@@ -114,6 +114,17 @@ public class Juego {
      * @return True si se decide jugar una nueva partida
      */
     private static boolean siguientePartida() {
+        showMarcador();
+        
+        char mander = ES.leeString("¿Deseas jugar otra partida? [S/n] ").trim().charAt(0);
+        
+        return mander == 's' || mander == 'S';
+    }
+    
+    /**
+     * Método para mostrar el marcador actual
+     */             
+    private static void showMarcador() {
         System.out.println("Marcador");
         System.out.println("--------------------------------------------------\n");
         // Functional Operations
@@ -123,11 +134,27 @@ public class Juego {
         jugador.forEach((player) -> {
             System.out.println(player.getNombre() + " :: " + player.getPuntos() + " puntos");
         });
+        
+        System.out.println(podio());
         System.out.println("\n--------------------------------------------------\n");
+    }
+
+    /**
+     * Función para analizar las puntuaciones máximas
+     * @return El nombre de los ganadores
+     */
+    private static String podio() {
+        String ganador = "";
+        int max_puntuacion = -1;
         
-        char mander = ES.leeString("¿Deseas jugar otra partida? [S/n] ").trim().charAt(0);
+        for(short i = 0; i < jugador.size(); i++) {
+            if(jugador.get(i).getPuntos() >= max_puntuacion) {
+                ganador = (jugador.get(i).getPuntos() == max_puntuacion) ? ganador + ", " + jugador.get(i).getNombre() : jugador.get(i).getNombre();
+                max_puntuacion = jugador.get(i).getPuntos();
+            }
+        }
         
-        return mander == 's' || mander == 'S';
+        return "\nGanador(es) :: " + ganador;
     }
     
     /**
