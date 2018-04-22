@@ -44,8 +44,12 @@ public class Juego {
      */
     private static void insertarJugador() {
         int numJugador = jugador.size() + 1;
+        String nombre = "";
+        do {
+            nombre = ES.leeString("Inserta al Jugador " + numJugador + ": ");
+        } while(nombre.equals(""));
         jugador.add(new Jugador(
-                ES.leeString("Inserta al Jugador " + numJugador + ": "),
+                nombre.trim(),
                 (short) ((48 / NUM_JUGADORES) + 1) // Implementacion para ver
                 // el máximo numero de cartas que puede tener un jugador en la mano
         ));
@@ -93,9 +97,8 @@ public class Juego {
                     mesa,
                     jugador_actual);
 
-            if (accion == 0) {
+            if (accion == 0)
                 turno++;
-            }
         } while (accion != 2 && !jugador_actual.ManoIsEmpty());
         
         ES.clearScreen();
