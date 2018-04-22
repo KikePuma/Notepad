@@ -1,5 +1,6 @@
 package core;
 
+import java.util.Deque;
 import java.util.ArrayDeque;
 
 // Anotaciones profesorado:
@@ -12,7 +13,7 @@ import java.util.ArrayDeque;
 // visualizar, etc
 public class Mesa {
     
-    private static ArrayDeque[] palos;
+    private static Deque[] palos;
     private static ArrayDeque<Integer> oros, copas, bastos, espadas;
     
     /**
@@ -99,6 +100,6 @@ public class Mesa {
         if("copas".equals(palo)) index = 1;
         if("bastos".equals(palo)) index = 2;
         if("espadas".equals(palo)) index = 3;
-        return palos[index];
+        return (ArrayDeque < Integer >) palos[index];
     }
 }
