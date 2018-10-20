@@ -8,6 +8,8 @@
   - [Preparación de los dispositivos](#raid5-pre)
   - [Creación del RAID5](#raid5-create)
   - [Formateo EXT3](#raid5-ext3)
+  - [Montaje del RAID5](#raid-mnt)
+  - [Extensión de dispositivos](#raid-extend)
 
 
 <a name="install"></a>
@@ -205,3 +207,176 @@ Working Devices : 3
 <a name="raid5-ext3"></a>
 ### Formateo EXT3
 ---
+Para formatear nuestro RAID en formato `ext3` ejecutaremos
+
+```sh
+mkfs.ext3 /dev/md/md_RAID5
+```
+
+Si no tenemos ningún error nos mostrará la siguiente salida:
+
+```sh
+Se está creando un sistema de ficheros con 200704 bloques de 1k y 50200 nodos-i
+UUID del sistema de ficheros: 4017da92-621e-46cc-8225-d786e3c4660b
+Respaldo del superbloque guardado en los bloques:
+	8193, 24577, 40961, 57345, 73729
+
+Reservando las tablas de grupo: hecho                           
+Escribiendo las tablas de nodos-i: hecho                           
+Creando el fichero de transacciones (4096 bloques): hecho
+Escribiendo superbloques y la información contable del sistema de ficheros:
+0/2hecho
+```
+
+<a name="raid5-mnt"></a>
+### Montaje del RAID5
+---
+Montaremos nuestro RAID5 de la siguiente manera
+
+```sh
+mkdir /mnt/raid
+mount /dev/md/md_RAID5 /mnt/raid/
+```
+
+Comprobaremos que se ha montado correctamente usando `lsblk`:
+
+```sh
+NAME      MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+sda         8:0    0   16G  0 disk  
+└─sda1      8:1    0   16G  0 part  /
+sdb         8:16   0    1G  0 disk  
+└─sdb1      8:17   0 1022M  0 part  [SWAP]
+sdc         8:32   0  100M  0 disk  
+└─sdc1      8:33   0   99M  0 part  
+  └─md127   9:127  0  196M  0 raid5 /mnt/raid
+sdd         8:48   0  100M  0 disk  
+└─sdd1      8:49   0   99M  0 part  
+  └─md127   9:127  0  196M  0 raid5 /mnt/raid
+sde         8:64   0  200M  0 disk  
+└─sde1      8:65   0  199M  0 part  
+  └─md127   9:127  0  196M  0 raid5 /mnt/raid
+sdf         8:80   0  100M  0 disk  
+```
+
+Para ver el espacio disponible usaremos el siguiente comando:
+
+```sh
+df -Th /mnt/raid
+```
+
+De esta forma nos mostrará que tenemos disponibles 175M en nuestro nuevo dispositivo
+
+```sh
+S.ficheros     Tipo Tamaño Usados  Disp Uso% Montado en
+/dev/md127     ext3   186M   1,6M  175M   1% /mnt/raid
+```
+
+Crearemos un archivo de prueba de 1MB en `/mnt/raid` para comprobar que funciona correctamente usando `dd`:
+
+```sh
+dd bs=1MB count=0 seek=1 of=/mnt/raid/allzeros
+ls -l /mnt/raid/allzeros
+```
+
+Como vemos, el archivo se ha creado correctamente:
+
+```sh
+0+0 registros leídos
+0+0 registros escritos
+0 bytes copied, 0,000191775 s, 0,0 kB/s
+-rw-r--r-- 1 root root 1000000 oct 20 13:52 /mnt/raid/allzeros
+```
+
+Curiosamente, si vemos el espacio disponible con el comando `df`, veremos que nada ha cambiado:
+
+```sh
+S.ficheros     Tipo Tamaño Usados  Disp Uso% Montado en
+/dev/md127     ext3   186M   1,6M  175M   1% /mnt/raid
+```
+
+Esto se debe a que el archivo `allzeros` no ocupa espacio real en el disco, dado que esta formado por bytes nulos.
+
+Si copiásemos cualquier otro fichero, el espacio sí que variaría:
+
+```sh
+cp /boot/initrd.img-4.9.0-7-amd64 /mnt/raid/
+df -Th /mnt/raid/
+```
+
+Dando como resultado lo siguiente:
+
+```sh
+S.ficheros     Tipo Tamaño Usados  Disp Uso% Montado en
+/dev/md127     ext3   186M    22M  155M  13% /mnt/raid
+```
+
+
+<a name="raid5-extend"></a>
+### Extensión de dispositivos
+---
+Lo primero será desmontar nuestro RAID
+
+```sh
+umount /mnt/raid
+```
+
+Particionaremos el dispositivo `sdf` tal y como hicimos con el resto:
+
+```sh
+parted /dev/sdf
+  (parted) mklabel msdos        
+  (parted) mkpart primary 1M 100%
+  (parted) set 1 raid on
+  (parted) quit
+```
+
+Comprobamos el resultado con `lsblk`:
+
+```sh
+NAME      MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+sda         8:0    0   16G  0 disk  
+└─sda1      8:1    0   16G  0 part  /
+sdb         8:16   0    1G  0 disk  
+└─sdb1      8:17   0 1022M  0 part  [SWAP]
+sdc         8:32   0  100M  0 disk  
+└─sdc1      8:33   0   99M  0 part  
+  └─md127   9:127  0  196M  0 raid5
+sdd         8:48   0  100M  0 disk  
+└─sdd1      8:49   0   99M  0 part  
+  └─md127   9:127  0  196M  0 raid5
+sde         8:64   0  200M  0 disk  
+└─sde1      8:65   0  199M  0 part  
+  └─md127   9:127  0  196M  0 raid5
+sdf         8:80   0  100M  0 disk  
+└─sdf1      8:81   0   99M  0 part
+```
+
+Para agregar nuestro nuevo dispositivo al RAID5, usaremos:
+
+```sh
+mdadm --add /dev/md/md_RAID5 /dev/sdf1
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://zackreed.me/adding-an-extra-disk-to-an-mdadm-array/
+https://unix.stackexchange.com/questions/102613/create-a-test-file-with-lots-of-zero-bytes
