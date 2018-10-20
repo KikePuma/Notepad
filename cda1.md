@@ -10,6 +10,7 @@
   - [Formateo EXT3](#raid5-ext3)
   - [Montaje del RAID5](#raid-mnt)
   - [Extensión de dispositivos](#raid-extend)
+  - [Extensión de almacenamiento](#raid-storage)
 
 
 <a name="install"></a>
@@ -356,6 +357,134 @@ Para agregar nuestro nuevo dispositivo al RAID5, usaremos:
 ```sh
 mdadm --add /dev/md/md_RAID5 /dev/sdf1
 ```
+
+Si comprobamos el resultado con `mdadm --detail /dev/md/md_RAID5` veremos que podemos usarlo, pero aún no está dentro de nuestro array.
+
+```sh
+/dev/md/md_RAID5:
+        Version : 1.2
+  Creation Time : Sat Oct 20 12:49:13 2018
+     Raid Level : raid5
+     Array Size : 200704 (196.00 MiB 205.52 MB)
+  Used Dev Size : 100352 (98.00 MiB 102.76 MB)
+   Raid Devices : 3
+  Total Devices : 4
+    Persistence : Superblock is persistent
+
+    Update Time : Sat Oct 20 14:14:45 2018
+          State : clean
+ Active Devices : 3
+Working Devices : 4
+ Failed Devices : 0
+  Spare Devices : 1
+
+         Layout : left-symmetric
+     Chunk Size : 512K
+
+           Name : datos.cda.net:md_RAID5  (local to host datos.cda.net)
+           UUID : 5f6d514c:209e86ab:54764a4a:b2f9824a
+         Events : 19
+
+    Number   Major   Minor   RaidDevice State
+       0       8       33        0      active sync   /dev/sdc1
+       1       8       49        1      active sync   /dev/sdd1
+       3       8       65        2      active sync   /dev/sde1
+
+       4       8       81        -      spare   /dev/sdf1
+```
+
+Para ello necesitaremos aumentar el número de dispositivos de nuestro RAID de la siguiente forma:
+
+```sh
+mdadm --grow --raid-devices=4 /dev/md/md_RAID5
+```
+
+Si comprobamos nuestro RAID5 con el comando `mdadm --detail /dev/md/md_RAID5`, veremos que ya está disponible dentro del array.
+
+```sh
+/dev/md/md_RAID5:
+        Version : 1.2
+  Creation Time : Sat Oct 20 12:49:13 2018
+     Raid Level : raid5
+     Array Size : 301056 (294.00 MiB 308.28 MB)
+  Used Dev Size : 100352 (98.00 MiB 102.76 MB)
+   Raid Devices : 4
+  Total Devices : 4
+    Persistence : Superblock is persistent
+
+    Update Time : Sat Oct 20 15:50:00 2018
+          State : clean
+ Active Devices : 4
+Working Devices : 4
+ Failed Devices : 0
+  Spare Devices : 0
+
+         Layout : left-symmetric
+     Chunk Size : 512K
+
+           Name : datos.cda.net:md_RAID5  (local to host datos.cda.net)
+           UUID : 5f6d514c:209e86ab:54764a4a:b2f9824a
+         Events : 39
+
+    Number   Major   Minor   RaidDevice State
+       0       8       33        0      active sync   /dev/sdc1
+       1       8       49        1      active sync   /dev/sdd1
+       3       8       65        2      active sync   /dev/sde1
+       4       8       81        3      active sync   /dev/sdf1
+```
+
+
+<a name="raid5-storage"></a>
+### Extensión de almacenamiento
+---
+Aunque nuestro RAID cuenta con un nuevo dispositivo, debemos redimensionar el espacio disponible.
+
+Para ello utilizaremos el siguiente comando:
+
+```sh
+resize2fs /dev/md/md_RAID5
+```
+
+En mi caso me saltó un error dado que el RAID debía ser comprobado
+antes de poder redimensionar su espacio:
+
+```sh
+resize2fs 1.43.4 (31-Jan-2017)
+Por favor ejecute antes 'e2fsck -f /dev/md/md_RAID5'.
+```
+
+Como bien indica, comprobamos el RAID con `e2fsck` antes de redimensionarlo:
+
+```sh
+e2fsck -f /dev/md/md_RAID5
+resize2fs /dev/md/md_RAID5
+```
+
+Y si todo sale bien, veremos la siguiente salida:
+
+```sh
+Paso 1: Verificando nodos-i, bloques y tamaños
+Paso 2: Verificando la estructura de directorios
+Paso 3: Revisando la conectividad de directorios
+Paso 4: Revisando las cuentas de referencia
+Paso 5: Revisando el resumen de información de grupos
+/dev/md/md_RAID5: 12/50200 ficheros (0.0% no contiguos),
+12001/200704 bloques
+
+resize2fs 1.43.4 (31-Jan-2017)
+Cambiando el tamaño del sistema de ficheros en /dev/md/md_RAID5
+a 301056 (1k) bloques.
+El sistema de ficheros en /dev/md/md_RAID5 tiene ahora 301056
+bloques (de 1k).
+```
+
+Comprobamos que no haya ocurrido nada raro durante el proceso usando `mdadm --detail /dev/md/md_RAID5`:
+
+```sh
+```
+
+
+
 
 
 
